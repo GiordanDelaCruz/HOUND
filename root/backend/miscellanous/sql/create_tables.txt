@@ -1,0 +1,30 @@
+// Account table
+CREATE TABLE account (
+	a_id SERIAL PRIMARY KEY,
+	email VARCHAR(100),
+	phone_number VARCHAR(15), 
+	username VARCHAR(100) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	f_Name VARCHAR(100) NOT NULL,
+	m_Name VARCHAR(100) NOT NULL,
+	l_Name VARCHAR(100) NOT NULL,
+	UNIQUE(email, phone_number, username)
+);
+
+// Workout Table
+CREATE TABLE workout (
+	w_id SERIAL PRIMARY KEY,
+	day VARCHAR(9),
+	date DATE NOT NULL
+);
+
+// Exercise Table
+CREATE TABLE exercise (
+	e_id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL, 
+	focus VARCHAR(100),
+	tag VARCHAR(50) NOT NULL, 
+	reps INT NOT NULL CHECK (reps > 0),
+	sets INT NOT NULL CHECK (sets > 0), 
+	additional_notes VARCHAR(3000) 
+);
