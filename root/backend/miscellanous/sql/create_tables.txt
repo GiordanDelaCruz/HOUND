@@ -1,6 +1,6 @@
 // Account table
 CREATE TABLE account (
-	a_id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	email VARCHAR(100),
 	phone_number VARCHAR(15), 
 	username VARCHAR(100) NOT NULL,
@@ -13,18 +13,36 @@ CREATE TABLE account (
 
 // Workout Table
 CREATE TABLE workout (
-	w_id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	day VARCHAR(9),
-	date DATE NOT NULL
+	date DATE NOT NULL, 
+	account_id INTEGER REFERENCES account,
 );
 
 // Exercise Table
 CREATE TABLE exercise (
-	e_id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	name VARCHAR(100) NOT NULL, 
 	focus VARCHAR(100),
 	tag VARCHAR(50) NOT NULL, 
+    weight INT NOT NULL,
+    body_weight BOOL NOT NULL, 
 	reps INT NOT NULL CHECK (reps > 0),
 	sets INT NOT NULL CHECK (sets > 0), 
-	additional_notes VARCHAR(3000) 
+	additional_notes VARCHAR(3000),
+	workout_id INTEGER REFERENCES workout
+);
+
+// ---------------------------------------------------------------------- //
+// -------					NOT IN USE ANYMORE			    	  ------- //
+// ---------------------------------------------------------------------- //
+// Relationships 
+CREATE TABLE account_workout(
+    account_id INTEGER REFERENCES account,
+    workout_id INTEGER REFERENCES workout
+);
+
+CREATE TABLE workout_exercise(
+    workout_id INTEGER REFERENCES workout,
+    exercise_id INTEGER REFERENCES exercise
 );
