@@ -38,14 +38,13 @@ app.get("/workouts", async(req, res) => {
     }
 });
 
-// [ GET: Search for a workout 
+// [ GET: Search for a workout based on the day
 app.get("/search/workout", async(req, res) => {
     try {
-        const workoutID = req.body.id;
         const day = req.body.day;
         console.log(day, workoutID)
         const result = await db.query(
-            "SELECT * FROM workout WHERE id = $1 AND day = $2",
+            "SELECT * FROM workout WHERE day = $2",
             [workoutID, day]
         );
         const data = result.rows;
@@ -54,15 +53,15 @@ app.get("/search/workout", async(req, res) => {
         console.log(error)
     }
 });
-// [ GET: Search for an exercise
+// [ GET: Search for an exercise based on the name or tag
 app.get("/search/exercise", async(req, res) => {
     try {
-        const workoutID = req.body.id;
-        const day = req.body.day;
-        console.log(day, workoutID);
+        const exerciseName = req.body.name;
+        const tag = req.body.tag;
+      
         const result = await db.query(
-            "SELECT * FROM workout WHERE id = $1 AND day = $2",
-            [workoutID, day]
+            "SELECT * FROM exercise WHERE name = $1 OR tag = $2",
+            [exerciseName, tag]
         );
         const data = result.rows;
         res.send(data);

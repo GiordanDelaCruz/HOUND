@@ -1,34 +1,30 @@
 // Search for ALL workouts and their exercise
 SELECT *
-FROM workout_exercise AS we
-JOIN workout AS w ON w.id = we.workout_id
-JOIN exercise AS e ON e.id = we.exercise_id
+FROM exercise AS e 
+JOIN workout AS w ON w.id = e.workout_id;
 
-// Get all data about the USER with an ID=1 and their workouts
+// Get all data about the USER with an ID=2 and their workouts
 SELECT *
-FROM workout_exercise AS we
-JOIN account_workout as aw ON aw.workout_id = we.workout_id
-JOIN account AS a ON a.id = aw.account_id
-JOIN workout AS w ON w.id = we.workout_id
-JOIN exercise AS e ON e.id = we.exercise_id
-WHERE we.workout_id = 1
+FROM account AS a
+JOIN account_workout AS aw ON aw.account_id = a.id
+JOIN workout AS w ON w.id = aw.workout_id
+JOIN exercise AS e ON e.workout_id = w.id
+WHERE a.id = 2
 
 
-// Get certain data about the USER with an ID=1 about their workout
-SELECT aw.account_id, we.workout_id, we.exercise_id, username, f_name, day, date, e.name, e.focus, e.tag, e.reps, e.sets, e.additional_notes, e.weight, e.body_weight  
-FROM workout_exercise AS we
-JOIN account_workout as aw ON aw.workout_id = we.workout_id
-JOIN account AS a ON a.id = aw.account_id
-JOIN workout AS w ON w.id = we.workout_id
-JOIN exercise AS e ON e.id = we.exercise_id
-WHERE we.workout_id = 1
+// Get certain data about the USER with an ID=2 about their workout
+SELECT a.id AS account_id, w.id AS workout_id, e.id AS exercise_id, username, f_name, day, date, e.name, e.focus, e.tag, e.weight, e.body_weight, e.reps, e.sets, e.additional_notes 
+FROM account AS a
+JOIN account_workout AS aw ON aw.account_id = a.id
+JOIN workout AS w ON w.id = aw.workout_id
+JOIN exercise AS e ON e.workout_id = w.id
+WHERE a.id = 2
 
-// Search for a specific exercise for a USER with ID=2
-SELECT aw.account_id, aw.workout_id, we.exercise_id, e.name, e.focus, e.tag, e.weight, e.body_weight, e.reps, e.sets, e.additional_notes
-FROM account_workout AS aw
-JOIN workout_exercise AS we ON we.workout_id = aw.workout_id
-JOIN account AS a ON a.id = aw.account_id
-JOIN workout AS w ON w.id = we.workout_id
-JOIN exercise AS e ON e.id = we.exercise_id
-WHERE e.name = 'Leg Press' AND a.id = 2;
 
+// Search for [LEG] exercises for a USER with ID=2
+SELECT a.id AS account_id, w.id AS workout_id, e.id AS exercise_id, username, f_name, day, date, e.name, e.focus, e.tag, e.weight, e.body_weight, e.reps, e.sets, e.additional_notes 
+FROM account AS a
+JOIN account_workout AS aw ON aw.account_id = a.id
+JOIN workout AS w ON w.id = aw.workout_id
+JOIN exercise AS e ON e.workout_id = w.id
+WHERE a.id = 2 AND e.name LIKE 'Leg%'

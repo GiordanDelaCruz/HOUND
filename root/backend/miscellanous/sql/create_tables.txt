@@ -6,7 +6,7 @@ CREATE TABLE account (
 	username VARCHAR(100) NOT NULL,
 	password VARCHAR(100) NOT NULL,
 	f_Name VARCHAR(100) NOT NULL,
-	m_Name VARCHAR(100) NOT NULL,
+	m_Name VARCHAR(100),
 	l_Name VARCHAR(100) NOT NULL,
 	UNIQUE(email, phone_number, username)
 );
@@ -16,7 +16,6 @@ CREATE TABLE workout (
 	id SERIAL PRIMARY KEY,
 	day VARCHAR(9),
 	date DATE NOT NULL, 
-	account_id INTEGER REFERENCES account,
 );
 
 // Exercise Table
@@ -25,7 +24,7 @@ CREATE TABLE exercise (
 	name VARCHAR(100) NOT NULL, 
 	focus VARCHAR(100),
 	tag VARCHAR(50) NOT NULL, 
-    weight INT NOT NULL,
+    weight INT NOT NULL CHECK (weight > 0),
     body_weight BOOL NOT NULL, 
 	reps INT NOT NULL CHECK (reps > 0),
 	sets INT NOT NULL CHECK (sets > 0), 
@@ -40,9 +39,4 @@ CREATE TABLE exercise (
 CREATE TABLE account_workout(
     account_id INTEGER REFERENCES account,
     workout_id INTEGER REFERENCES workout
-);
-
-CREATE TABLE workout_exercise(
-    workout_id INTEGER REFERENCES workout,
-    exercise_id INTEGER REFERENCES exercise
 );
