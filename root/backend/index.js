@@ -42,10 +42,9 @@ app.get("/workouts", async(req, res) => {
 app.get("/search/workout", async(req, res) => {
     try {
         const day = req.body.day;
-        console.log(day, workoutID)
         const result = await db.query(
-            "SELECT * FROM workout WHERE day = $2",
-            [workoutID, day]
+            "SELECT * FROM workout WHERE day = $1",
+            [day]
         );
         const data = result.rows;
         res.send(data);
@@ -53,6 +52,7 @@ app.get("/search/workout", async(req, res) => {
         console.log(error)
     }
 });
+
 // [ GET: Search for an exercise based on the name or tag
 app.get("/search/exercise", async(req, res) => {
     try {
@@ -91,7 +91,7 @@ app.post("/add/workout", async(req, res) => {
 app.post("/add/exercise", async(req, res) => {
     try {
         const exercise_name = req.body.exercise_name;
-        const focus = req.body.focus;
+        const focus = (req.body.focus !== null) ? req.body.focus : 'N/A';
         const tag = req.body.tag;
         const body_weight = req.body.body_weight;
         const weight = req.body.weight;
@@ -157,7 +157,7 @@ app.delete("/delete/workout", (req, res) => {
         "DELETE FROM workout WHERE id = $1", 
         [workoutID]
       );
-      res.send(`deleted record with id of ${workoutID}`);
+      res.send(`Deleted record with id of ${workoutID}`);
     } catch (error) {
       console.log(error)
     }
