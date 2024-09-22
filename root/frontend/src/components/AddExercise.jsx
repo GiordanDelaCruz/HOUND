@@ -1,37 +1,70 @@
 import react from "react";
+import { v4 as uuidv4 } from 'uuid';
 import '../assets/styles/AddExercise.css';
 
-function AddExercise(props){
-    return(
-        <div>
-            <h1>Add Exercise</h1>
+// React Components
+import GeneralInput from "./primary/GeneralInput";
+import SelectInput from "./primary/SelectInput";
+import TextAreaInput from "./primary/TextAreaInput";
 
+function AddExercise(props){
+    let tags = ["Shoulders", "Chest", "Back", "Arms", "Legs"];
+
+    return(
+        <>
             <form action="">
                 <fieldset>
-                    <legend>LEGEND: Exercise</legend>
-                </fieldset>
+                    <legend>Add Exercise</legend>
+                    {/* Exercise */}
+                    <GeneralInput 
+                        key = {uuidv4()}
+                        name = "Exercise"
+                        type = "text"
+                        id = "floatingExercise"
+                        isMandatory = {true}
+                    />
+                    {/* Focus */}
+                    <GeneralInput 
+                        key = {uuidv4()}
+                        name = "Focus"
+                        type = "text"
+                        id = "floatingFocus"
+                        isMandatory = {false}
+                    />
+                    {/* Tag */}
+                    <SelectInput
+                        key = {uuidv4()}
+                        name = "Workout Tag"
+                        id = "floatingSelect"
+                        isMandatory = {true}
+                        options = {tags}
+                    />
+                    {/* Reps */}
+                    <GeneralInput 
+                        key = {uuidv4()}
+                        name = "Reps"
+                        type = "number"
+                        id = "floatingReps"
+                        isMandatory = {true}
+                    />
+                    {/* Sets */}
+                    <GeneralInput 
+                        key = {uuidv4()}
+                        name = "Sets"
+                        type = "number"
+                        id = "floatingSets"
+                        isMandatory = {true}
+                    />
+                    {/* Additional Notes */}
+                    <TextAreaInput
+                        key = {uuidv4()}
+                        name = "Additional Notes"
+                        id = "floatingAdditionalNotes"
+                        isMandatory = {true}
+                    />
+                </fieldset>   
             </form>
-            <div class="mb-3">
-                <label for="exercise" class="form-label">Exercise: </label>
-                <input name="exercise" class="form-control" type="text" id="exercise"/>
-            </div>
-            <div class="mb-3">
-                <label for="formFileMultiple" class="form-label">Multiple files input example</label>
-                <input class="form-control" type="file" id="formFileMultiple" multiple/>
-            </div>
-            <div class="mb-3">
-                <label for="formFileDisabled" class="form-label">Disabled file input example</label>
-                <input class="form-control" type="file" id="formFileDisabled" disabled/>
-            </div>
-            <div class="mb-3">
-                <label for="formFileSm" class="form-label">Small file input example</label>
-                <input class="form-control form-control-sm" id="formFileSm" type="file"/>
-            </div>
-            <div>
-                <label for="formFileLg" class="form-label">Large file input example</label>
-                <input class="form-control form-control-lg" id="formFileLg" type="file"/>
-            </div>
-        </div>
+        </>
     );
 }
 
