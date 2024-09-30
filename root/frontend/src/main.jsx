@@ -10,7 +10,7 @@ import {
 // Components
 import App from './App.jsx';
 import AddWorkout from './components/AddWorkout'
-import AddExercise from './components/AddExercise.jsx';
+import ExerciseForm from './components/ExerciseForm.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   }, 
   {
     path: "/addExercise",
-    element:  <AddExercise />,
+    element:  <ExerciseForm />,
   }
 ]);
 

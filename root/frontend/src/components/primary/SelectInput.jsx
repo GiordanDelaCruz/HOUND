@@ -5,29 +5,15 @@ function SelectInput(props){
     return(
         <>
             <div className="form-floating mb-3">
-                {/* Mandatory Input */
-                    props.isMandatory && 
-                    <select className="form-select" id={props.id} required>
-                        {props.options.map( (elem, idx) => {
-                            return(
-                                <option value={elem}>{elem}</option>
-                            );
-                        })}
-                    </select>
-                }
-                 {/* Optional Input */
-                    !props.isMandatory && 
-                    <select className="form-select" id={props.id} >
-                        {props.options.map( (elem, idx) => {
-                            return(
-                                <option value={elem}>{elem}</option>
-                            );
-                        })}
-                    </select>
-                }
-
-                 {/* Label */}
-                 <label for={props.id}>{props.name} {props.isMandatory && <span className="text-danger">*</span> }</label>
+                <select className="form-select" id={props.id} required={props.required}>
+                    {props.options.map( (elem, idx) => {
+                        return(
+                            <option value={elem}>{elem}</option>
+                        );
+                    })}
+                </select>
+               
+                 <label for={props.id}>{props.name} {props.required && <span className="text-danger">*</span> }</label>
             </div> 
         </>
     );
