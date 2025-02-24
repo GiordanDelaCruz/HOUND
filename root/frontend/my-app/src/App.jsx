@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Button, Container, Typography } from "@mui/material";
 import CompletedExercise from "./components/CompletedExercise";
-import { Table } from "@mui/material";
-import DenseTable from "./components/DenseTable";
-import CollapseTable from "./components/CollapseTable";
-import StickyHeadTable from "./components/StickyTable";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Grid2 } from "@mui/material";
-import SearchAppBar from "./components/SearchAppBar";
 import AddWorkout from "./components/AddWorkout";
+import NavBar from "./components/NavBar";
 // import BasicDateCalendar from "./components/BasicDateCalendar";
 
 // Connect to Supabase
@@ -76,12 +72,13 @@ function App() {
   // GET a list of all exercises in the database
   async function getExercise() {
     const { data } = await supabase.from("exercise").select();
-    // setExercise(data);
+    setExercise(data);
   }
 
   // GET exercises a user completed completed
   async function getPreviousExercise() {
     const { data, error } = await supabase.from("exercise_completed").select(`
+      id,
       weekday,
       date,
       duration,
@@ -101,20 +98,18 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <SearchAppBar></SearchAppBar>
+        <NavBar></NavBar>
         <Container>
-          <AddWorkout></AddWorkout>
+          <AddWorkout exercises={exercise}></AddWorkout>
         </Container>
         <Container>
           <Grid2 container spacing={2}>
             <Grid2 item size={9}>
+              <Typography></Typography>
               <CompletedExercise data={previousExercise}></CompletedExercise>
             </Grid2>
             <Grid2 item size={3}>
               {/* <BasicDateCalendar></BasicDateCalendar> */}
-            </Grid2>
-            <Grid2 item size={6}>
-              <CollapseTable></CollapseTable>
             </Grid2>
           </Grid2>
         </Container>

@@ -7,8 +7,8 @@ import Select from "@mui/material/Select";
 import { v4 as uuidv4 } from "uuid";
 
 export default function BasicSelect({ inputType, options }) {
-  console.log(inputType);
-  console.log(options);
+  //   console.log(inputType);
+  //   console.log(options);
   const [input, setInput] = React.useState("");
 
   const handleChange = (event) => {
