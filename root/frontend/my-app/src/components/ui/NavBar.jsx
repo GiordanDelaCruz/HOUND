@@ -14,12 +14,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { mainNavbarItems } from "../assets/data/navbarListItems";
-import { Search } from "../assets/data/SearchBar/Search";
-import { SearchIconWrapper } from "../assets/data/SearchBar/SearchIconWrapper";
-import { StyledInputBase } from "../assets/data/SearchBar/StyledInputBase";
+import { mainNavbarItems } from "../../assets/data/navbarListItems";
+import { Search } from "../../assets/data/SearchBar/Search";
+import { SearchIconWrapper } from "../../assets/data/SearchBar/SearchIconWrapper";
+import { StyledInputBase } from "../../assets/data/SearchBar/StyledInputBase";
+import { NavLink } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 export default function NavBar() {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -31,7 +34,7 @@ export default function NavBar() {
       <List>
         {mainNavbarItems.map((elem, index) => (
           <ListItem key={elem.id} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate(elem.route)}>
               <ListItemIcon>{elem.icon}</ListItemIcon>
               <ListItemText primary={elem.label} />
             </ListItemButton>

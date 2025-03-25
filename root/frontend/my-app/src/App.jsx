@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { Button, Container, Typography } from "@mui/material";
-import CompletedExercise from "./components/CompletedExercise";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home/Home";
+import AddWorkout from "./pages/AddWorkout/AddWorkout";
+import History from "./pages/History/History";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Grid2 } from "@mui/material";
-import AddWorkout from "./components/AddWorkout";
-import NavBar from "./components/NavBar";
-// import BasicDateCalendar from "./components/BasicDateCalendar";
 
 // Connect to Supabase
 const supabaseUrl = "https://vocsmhbcgypycbmkiewj.supabase.co";
@@ -26,6 +24,41 @@ const theme = createTheme({
 });
 
 function App() {
+  // React Hook
+  const [exerciseData, setExerciseData] = useState([]);
+  const [exerciseCompleted, setExerciseCompleted] = useState([]);
+
+  // Render page initialy
+  useEffect(() => {
+    getExerciseData();
+  }, []);
+  useEffect(() => {
+    getExerciseCompleted();
+  }, []);
+
+  // GET a list of all exercises in the database
+  async function getExerciseData() {
+    const { data } = await supabase.from("exercise").select();
+    setExerciseData(data);
+  }
+
+  // GET a list of all exercises completed by a user
+  async function getExerciseCompleted() {
+    const { data, error } = await supabase.from("exercise_completed").select(`
+          id,
+          weekday,
+          date,
+          duration,
+          weight,
+          reps,
+          sets,
+          additional_notes,
+          exercise(name, tag, type)
+        `);
+    setExerciseCompleted(data);
+  }
+
+  // Exercise Data
   const exerciseHeaders = [
     "weekday",
     "date",
@@ -38,81 +71,51 @@ function App() {
     "sets",
     "additional_notes",
   ];
-
-  const hiddenExerciseHeaders = [
-    "id",
-    "created_at",
-    "weekday",
-    "date",
-    "workout_id",
-    "exercise_id",
-    "tag",
-    "type",
-    "name",
-    "duration",
-    "weight",
-    "reps",
-    "sets",
-    "additional_notes",
+  const exerciseTags = [
+    "Abs",
+    "Arms",
+    "Back",
+    "Cardio",
+    "Chest",
+    "Legs",
+    "Shoulders",
   ];
-
-  // React Hook
-  const [exercise, setExercise] = useState([]);
-  const [previousExercise, setPreviousExercise] = useState([]);
-
-  // Render page initialy
-  useEffect(() => {
-    getExercise();
-  }, []);
-
-  useEffect(() => {
-    getPreviousExercise();
-  }, []);
-
-  // GET a list of all exercises in the database
-  async function getExercise() {
-    const { data } = await supabase.from("exercise").select();
-    setExercise(data);
-  }
-
-  // GET exercises a user completed completed
-  async function getPreviousExercise() {
-    const { data, error } = await supabase.from("exercise_completed").select(`
-      id,
-      weekday,
-      date,
-      duration,
-      weight,
-      reps,
-      sets,
-      additional_notes,
-      exercise(name, tag, type)
-    `);
-
-    // const { data } = await supabase.from("exercise_completed").select();
-    // console.log(Object.keys(data[0]));
-    // console.log(data);
-    setPreviousExercise(data);
-  }
+  const exerciseTypes = [
+    "Barbell",
+    "Body Weight",
+    "Dumbbell",
+    "Equipment",
+    "Machine",
+  ];
+  const exerciseNames = exerciseData.map((elem) => elem.name).sort();
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <NavBar></NavBar>
-        <Container>
-          <AddWorkout exercises={exercise}></AddWorkout>
-        </Container>
-        <Container>
-          <Grid2 container spacing={2}>
-            <Grid2 item size={9}>
-              <Typography></Typography>
-              <CompletedExercise data={previousExercise}></CompletedExercise>
-            </Grid2>
-            <Grid2 item size={3}>
-              {/* <BasicDateCalendar></BasicDateCalendar> */}
-            </Grid2>
-          </Grid2>
-        </Container>
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home
+                  exerciseHeaders={exerciseHeaders}
+                  exerciseCompleted={exerciseCompleted}
+                />
+              }
+            />
+            <Route
+              path="/addWorkout"
+              element={
+                <AddWorkout
+                  exerciseNames={exerciseNames}
+                  exerciseTags={exerciseTags}
+                  exerciseTypes={exerciseTypes}
+                />
+              }
+            />
+            <Route path="/history" element={<History></History>} />
+          </Routes>
+        </Router>
       </ThemeProvider>
     </>
   );

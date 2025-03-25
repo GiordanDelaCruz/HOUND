@@ -8,18 +8,18 @@ export const mainNavbarItems = [
     id: uuidv4(),
     icon: <HomeIcon />,
     label: "Home",
-    route: "route",
+    route: "/",
   },
   {
     id: uuidv4(),
     icon: <FitnessCenterIcon />,
     label: "History",
-    route: "route",
+    route: "/history",
   },
   {
     id: uuidv4(),
     icon: <AddIcon />,
     label: "Add Workout",
-    route: "route",
+    route: "/addWorkout",
   },
 ];
